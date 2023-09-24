@@ -92,6 +92,19 @@
             }
         }
 
+        public void SetRawDataSpan(Span<byte> newData)
+        {
+            var t16 = (newData.Length * (4));
+            for (int i = 0; i < t16; i += 4)
+            {
+                (byte R, byte G, byte B, byte A) = GetColorFromIndex(newData[i / 4]);
+                RawData[i + 0] = R;
+                RawData[i + 1] = G;
+                RawData[i + 2] = B;
+                RawData[i + 3] = A;
+            }
+        }
+
         public (byte R, byte G, byte B, byte A) GetColorFromIndex(byte ColorIndex)
         {
             switch (ColorIndex & 0x0F) //mask only care about lower bits

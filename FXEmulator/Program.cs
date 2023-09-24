@@ -10,8 +10,8 @@ public static class Program
 
 	public static void Main()
 	{
-		emu.data[0xfffc] = 0x00;
-		emu.data[0xfffd] = 0x06;
+		emu.data[0xfffc] = 0x00; //set low byte of initialization vector
+		emu.data[0xfffd] = 0x06; //set high byte of initialization vector
 
         //     emu.data.AddCodeAt(0x0600,
         //0xa2, 0x00,			//	LDX #$00
@@ -135,6 +135,7 @@ class PixelManager : IPixelWindowAppManager
         // Randomised pixels shown as example.
 
         pixelData.Clear();
-        pixelData.SetRawData(Program.emu.data.Skip(0x0200).Take(1024).ToArray());
+        pixelData.SetRawDataSpan(Program.emu.data.AsSpan().Slice(0x0200, 1024)); //using a span which i think is better
+        //pixelData.SetRawData(Program.emu.data.Skip(0x0200).Take(1024).ToArray());
     }
 }
